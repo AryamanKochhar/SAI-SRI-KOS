@@ -1,5 +1,4 @@
-//THIS CODE WILL RUN ON CPP
-#include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
 
 #define STACK_MAX_SIZE 101
