@@ -15,7 +15,7 @@ int isEmpty()
     return (front == -1 || front > rear);
 }
 
-void enqueue(int value)
+void enqueue(char value)
 {
     if (isFull)
     {
