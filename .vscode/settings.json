@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "array": "c",
+        "deque": "c",
+        "span": "c",
+        "vector": "c",
+        "xstring": "c",
+        "xutility": "c"
+    }
+}
