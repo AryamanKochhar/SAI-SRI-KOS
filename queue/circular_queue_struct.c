@@ -3,30 +3,37 @@
 
 #define MAX 5
 
-typedef struct {
+typedef struct
+{
     int items[MAX];
     int front, rear;
 } CircularQueue;
 
-void initializeQueue(CircularQueue *q) {
+void initializeQueue(CircularQueue *q)
+{
     q->front = -1;
     q->rear = -1;
 }
 
-int isEmpty(CircularQueue *q) {
+int isEmpty(CircularQueue *q)
+{
     return q->front == -1;
 }
 
-int isFull(CircularQueue *q) {
+int isFull(CircularQueue *q)
+{
     return (q->rear + 1) % MAX == q->front;
 }
 
-void enqueue(CircularQueue *q, int item) {
-    if (isFull(q)) {
+void enqueue(CircularQueue *q, int item)
+{
+    if (isFull(q))
+    {
         printf("Queue is full. Cannot enqueue %d\n", item);
         return;
     }
-    if (isEmpty(q)) {
+    if (isEmpty(q))
+    {
         q->front = 0;
     }
     q->rear = (q->rear + 1) % MAX;
@@ -34,44 +41,56 @@ void enqueue(CircularQueue *q, int item) {
     printf("%d enqueued to queue\n", item);
 }
 
-int dequeue(CircularQueue *q) {
-    if (isEmpty(q)) {
+int dequeue(CircularQueue *q)
+{
+    if (isEmpty(q))
+    {
         printf("Queue is empty. Cannot dequeue\n");
         return -1;
     }
     int item = q->items[q->front];
-    if (q->front == q->rear) {
+    if (q->front == q->rear)
+    {
         q->front = q->rear = -1;
-    } else {
+    }
+    else
+    {
         q->front = (q->front + 1) % MAX;
     }
     return item;
 }
 
-int peek(CircularQueue *q) {
-    if (isEmpty(q)) {
+int peek(CircularQueue *q)
+{
+    if (isEmpty(q))
+    {
         printf("Queue is empty. Cannot peek\n");
         return -1;
     }
     return q->items[q->front];
 }
 
-void displayQueue(CircularQueue *q) {
-    if (isEmpty(q)) {
+void displayQueue(CircularQueue *q)
+{
+    if (isEmpty(q))
+    {
         printf("Queue is empty\n");
         return;
     }
     printf("Queue elements: ");
     int i = q->front;
-    while (1) {
+    while (1)
+    {
         printf("%d ", q->items[i]);
-        if (i == q->rear) break;
+        if (i == q->rear)
+            break;
         i = (i + 1) % MAX;
     }
     printf("\n");
 }
 
-int main() {
+int main()
+{
     CircularQueue q;
     initializeQueue(&q);
 
@@ -93,7 +112,7 @@ int main() {
     enqueue(&q, 70);
 
     displayQueue(&q);
-    
+
     printf("Peek at front item: %d\n", peek(&q));
 
     return 0;
