@@ -1,0 +1,11 @@
+ORG 0000H 
+MOV TMOD, #20H         ; Timer 1 in mode 2 as a counter
+MOV TH1, #-6DH
+MOV SCON,#50H
+SETB TR1     
+AGAIN:MOV SBUF,#"G"
+L1: JNB TI,L1
+CLR TI 
+CLR TR1
+SJMP AGAIN
+END
