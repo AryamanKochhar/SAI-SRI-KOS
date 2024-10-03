@@ -5,6 +5,10 @@
         "span": "c",
         "vector": "c",
         "xstring": "c",
-        "xutility": "c"
+        "xutility": "c",
+        "stdio.h": "c",
+        "types.h": "c",
+        "string.h": "c",
+        "stdlib.h": "c"
     }
 }

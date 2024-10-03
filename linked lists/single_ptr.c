@@ -7,13 +7,15 @@ struct Node
     struct Node *next;
 };
 
-void insertAtBeginning(struct Node **head_ref, int new_data)
+struct Node* insertAtBeginning(struct Node *head_ref, int new_data)
 {
     struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
 
     new_node->data = new_data;
-    new_node->next = (*head_ref);
-    (*head_ref) = new_node;
+    new_node->next = head_ref;
+    head_ref = new_node;
+
+    return head_ref;
 }
 
 void insertAfter(struct Node *prev_node, int new_data)
@@ -30,18 +32,18 @@ void insertAfter(struct Node *prev_node, int new_data)
     prev_node->next = new_node;
 }
 
-void insertAtEnd(struct Node **head_ref, int new_data)
+struct Node* insertAtEnd(struct Node *head_ref, int new_data)
 {
     struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
-    struct Node *last = (*head_ref);
+    struct Node *last = head_ref;
 
     new_node->data = new_data;
     new_node->next = NULL;
 
-    if (*head_ref == NULL)
+    if (head_ref == NULL)
     {
-        *head_ref = new_node;
-        return;
+        head_ref = new_node;
+        return head_ref;
     }
 
     while (last->next != NULL)
@@ -50,18 +52,20 @@ void insertAtEnd(struct Node **head_ref, int new_data)
     }
 
     last->next = new_node;
+
+    return head_ref;
 }
 
-void deleteNode(struct Node **head_ref, int key)
+struct Node* deleteNode(struct Node *head_ref, int key)
 {
-    struct Node *temp = (*head_ref);
-    struct Node *prev;
+    struct Node *temp = head_ref;
+    struct Node *prev = NULL;
 
     if (temp != NULL && temp->data == key)
     {
-        (*head_ref) = temp->next;
+        head_ref = temp->next;
         free(temp);
-        return;
+        return head_ref;
     }
 
     while (temp != NULL && temp->data != key)
@@ -72,26 +76,28 @@ void deleteNode(struct Node **head_ref, int key)
 
     if (temp == NULL)
     {
-        return;
+        return head_ref;
     }
 
     prev->next = temp->next;
     free(temp);
+
+    return head_ref;
 }
 
-void deleteAtIndex(struct Node **head_ref, int index)
+struct Node* deleteAtIndex(struct Node *head_ref, int index)
 {
-    struct Node *temp = (*head_ref);
-    struct Node *prev;
+    struct Node *temp = head_ref;
+    struct Node *prev = NULL;
 
     if (index == 0)
     {
-        (*head_ref) = temp->next;
+        head_ref = temp->next;
         free(temp);
-        return;
+        return head_ref;
     }
 
-    for (int i = 0; i < index && temp != NULL; i++)
+    for (int i = 0; temp != NULL && i < index; i++)
     {
         prev = temp;
         temp = temp->next;
@@ -99,20 +105,22 @@ void deleteAtIndex(struct Node **head_ref, int index)
 
     if (temp == NULL)
     {
-        return;
+        return head_ref;
     }
 
     prev->next = temp->next;
     free(temp);
+
+    return head_ref;
 }
 
-int serachNode(struct Node **head_ref, int key)
+int searchNode(struct Node *head_ref, int key)
 {
-    struct Node *current = *head_ref;
+    struct Node *current = head_ref;
 
     while (current != NULL)
     {
-        if (current->data != key)
+        if (current->data == key)
         {
             return 1;
         }
@@ -122,14 +130,14 @@ int serachNode(struct Node **head_ref, int key)
     return 0;
 }
 
-struct Node *reversedLL(struct Node **head_ref)
+struct Node* reversedLL(struct Node *head_ref)
 {
-    struct Node *temp = *head_ref;
+    struct Node *temp = head_ref;
     struct Node *reversed = NULL;
 
     while (temp != NULL)
     {
-        insertAtBeginning(&reversed, temp->data);
+        reversed = insertAtBeginning(reversed, temp->data);
         temp = temp->next;
     }
 
@@ -138,44 +146,43 @@ struct Node *reversedLL(struct Node **head_ref)
 
 void printList(struct Node *node)
 {
-    // Traverse and print each node's data
     while (node != NULL)
     {
-        printf(" %d ", node->data); // Print the data of the current node
-        node = node->next;          // Move to the next node
+        printf(" %d ", node->data);
+        node = node->next;
     }
     printf("\n");
 }
 
-struct Node *joinLL(struct Node **head, struct Node **tail)
+struct Node* joinLL(struct Node *head1, struct Node *head2)
 {
-    struct Node *temp1 = *head;
-    struct Node *temp2 = *tail;
-    struct Node *temp3 = NULL;
+    struct Node *temp1 = head1;
+    struct Node *temp2 = head2;
+    struct Node *newList = NULL;
 
     while (temp1 != NULL)
     {
-        insertAtEnd(&temp3, temp1->data);
+        newList = insertAtEnd(newList, temp1->data);
         temp1 = temp1->next;
     }
 
     while (temp2 != NULL)
     {
-        insertAtEnd(&temp3, temp2->data);
+        newList = insertAtEnd(newList, temp2->data);
         temp2 = temp2->next;
     }
 
-    return temp3;
+    return newList;
 }
 
-void sortLL(struct Node **head_ref)
+struct Node* sortLL(struct Node *head_ref)
 {
-    struct Node *current = *head_ref, *index = NULL;
+    struct Node *current = head_ref, *index = NULL;
     int temp;
 
-    if (*head_ref == NULL)
+    if (head_ref == NULL)
     {
-        return;
+        return head_ref;
     }
 
     while (current != NULL)
@@ -194,14 +201,17 @@ void sortLL(struct Node **head_ref)
         }
         current = current->next;
     }
+
+    return head_ref;
 }
 
-// void removeDuplicates(struct Node **head_ref)
+// Uncomment if needed for future use
+// struct Node* removeDuplicates(struct Node *head_ref)
 // {
-//     if (*head_ref == NULL)
-//         return;
+//     if (head_ref == NULL)
+//         return head_ref;
 
-//     struct Node *current = *head_ref;
+//     struct Node *current = head_ref;
 //     struct Node *next_next;
 
 //     while (current->next != NULL)
@@ -217,26 +227,29 @@ void sortLL(struct Node **head_ref)
 //             current = current->next;
 //         }
 //     }
+
+//     return head_ref;
 // }
 
 int main()
 {
     struct Node *head = NULL;
-
+    
     for (int i = 0; i < 10; i++)
     {
-        insertAtBeginning(&head, i);
+        head = insertAtBeginning(head, i);
     }
 
-    struct Node *rev = reversedLL(&head);
+    struct Node *rev = reversedLL(head);
 
     printList(head);
     printList(rev);
 
-    struct Node *newLL = joinLL(&head, &rev);
+    struct Node *newLL = joinLL(head, rev);
     printList(newLL);
-    struct Node *newwLL = joinLL(&head, &newLL);
-    struct Node *revv = reversedLL(&newwLL);
+
+    struct Node *newwLL = joinLL(head, newLL);
+    struct Node *revv = reversedLL(newwLL);
     printList(revv);
 
     struct Node *t = head;
@@ -253,8 +266,12 @@ int main()
 
     printList(head);
 
-    removeDuplicates(&head);
+    // Uncomment if needed in the future
+    // head = removeDuplicates(head);
     printList(head);
-    insertAtBeginning(&head, 69);
+
+    head = insertAtBeginning(head, 69);
     printList(head);
+
+    return 0;
 }
