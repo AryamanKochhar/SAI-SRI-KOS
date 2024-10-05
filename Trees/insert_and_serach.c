@@ -145,6 +145,36 @@ int findMax(BstNode *root)
     return root->data;
 }
 
+void inorderTraversal(BstNode *root)
+{
+    if (root == NULL)
+        return;
+    
+    inorderTraversal(root->left);
+    printf("%d ", root->data);
+    inorderTraversal(root->right);
+}
+
+void preorderTraversal(BstNode *root)
+{
+    if (root == NULL)
+        return;
+    
+    printf("%d ", root->data);
+    preorderTraversal(root->left);
+    preorderTraversal(root->right);
+}
+
+void postorderTraversal(BstNode *root)
+{
+    if (root == NULL)
+        return;
+    
+    postorderTraversal(root->left);
+    postorderTraversal(root->right);
+    printf("%d ", root->data);
+}
+
 int main()
 {
     BstNode *root = NULL;
@@ -184,6 +214,18 @@ int main()
 
     int maxValue = findMax(root);
     printf("Maximum value in the tree: %d\n", maxValue);
+
+    printf("\nIn-order Traversal: ");
+    inorderTraversal(root);
+    printf("\n");
+
+    printf("Pre-order Traversal: ");
+    preorderTraversal(root);
+    printf("\n");
+
+    printf("Post-order Traversal: ");
+    postorderTraversal(root);
+    printf("\n");
 
     return 0;
 }
