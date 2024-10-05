@@ -8,6 +8,18 @@ typedef struct BstNode
     struct BstNode *right;
 } BstNode;
 
+typedef struct QueueNode
+{
+    BstNode *treeNode;
+    struct QueueNode *next;
+} QueueNode;
+
+typedef struct Queue
+{
+    QueueNode *front;
+    QueueNode *rear;
+} Queue;
+
 BstNode *createNewNode(int data)
 {
     BstNode *new_node = (BstNode *)malloc(sizeof(BstNode));
@@ -175,6 +187,74 @@ void postorderTraversal(BstNode *root)
     printf("%d ", root->data);
 }
 
+// Queue Functions for Level Order Traversal
+Queue *createQueue()
+{
+    Queue *queue = (Queue *)malloc(sizeof(Queue));
+    queue->front = queue->rear = NULL;
+    return queue;
+}
+
+void enqueue(Queue *queue, BstNode *node)
+{
+    QueueNode *newNode = (QueueNode *)malloc(sizeof(QueueNode));
+    newNode->treeNode = node;
+    newNode->next = NULL;
+
+    if (queue->rear == NULL)
+    {
+        queue->front = queue->rear = newNode;
+        return;
+    }
+
+    queue->rear->next = newNode;
+    queue->rear = newNode;
+}
+
+BstNode *dequeue(Queue *queue)
+{
+    if (queue->front == NULL)
+        return NULL;
+
+    QueueNode *temp = queue->front;
+    BstNode *treeNode = temp->treeNode;
+    queue->front = queue->front->next;
+
+    if (queue->front == NULL)
+        queue->rear = NULL;
+
+    free(temp);
+    return treeNode;
+}
+
+int isQueueEmpty(Queue *queue)
+{
+    return queue->front == NULL;
+}
+
+void levelOrderTraversal(BstNode *root)
+{
+    if (root == NULL)
+        return;
+
+    Queue *queue = createQueue();
+    enqueue(queue, root);
+
+    while (!isQueueEmpty(queue))
+    {
+        BstNode *currentNode = dequeue(queue);
+        printf("%d ", currentNode->data);
+
+        if (currentNode->left != NULL)
+            enqueue(queue, currentNode->left);
+
+        if (currentNode->right != NULL)
+            enqueue(queue, currentNode->right);
+    }
+
+    free(queue);
+}
+
 int main()
 {
     BstNode *root = NULL;
@@ -225,6 +305,10 @@ int main()
 
     printf("Post-order Traversal: ");
     postorderTraversal(root);
+    printf("\n");
+
+    printf("Level-order Traversal: ");
+    levelOrderTraversal(root);
     printf("\n");
 
     return 0;
