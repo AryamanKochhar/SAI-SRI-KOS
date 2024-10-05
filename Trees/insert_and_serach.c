@@ -20,13 +20,13 @@ typedef struct Queue
     QueueNode *rear;
 } Queue;
 
+
 BstNode *createNewNode(int data)
 {
     BstNode *new_node = (BstNode *)malloc(sizeof(BstNode));
     new_node->data = data;
     new_node->left = NULL;
     new_node->right = NULL;
-
     return new_node;
 }
 
@@ -44,117 +44,56 @@ BstNode *Insert(BstNode *root, int data)
     {
         root->right = Insert(root->right, data);
     }
-
     return root;
 }
 
-int Search(BstNode *root, int data)
+BstNode *findMinNode(BstNode *root)
 {
-    if (root == NULL)
-    {
-        return 0;
-    }
-    else if (root->data == data)
-    {
-        return 1;
-    }
-    else if (data <= root->data)
-    {
-        return Search(root->left, data);
-    }
-    else
-    {
-        return Search(root->right, data);
-    }
-}
-
-BstNode *findNode(BstNode *root, int data)
-{
-    if (root == NULL)
-        return NULL;
-    if (root->data == data)
-        return root;
-    else if (data < root->data)
-        return findNode(root->left, data);
-    else
-        return findNode(root->right, data);
-}
-
-int findNodeHeight(BstNode *root, int data)
-{
-    BstNode *targetNode = findNode(root, data);
-    if (targetNode == NULL)
-        return -1;
-
-    return findHeight(targetNode);
-}
-
-int findHeight(BstNode *root)
-{
-    if (root == NULL)
-    {
-        return -1;
-    }
-
-    int leftHeight = findHeight(root->left);
-    int rightHeight = findHeight(root->right);
-
-    return (leftHeight > rightHeight ? leftHeight : rightHeight) + 1;
-}
-
-int findNodeDepth(BstNode *root, int data)
-{
-    int depth = 0;
-    while (root != NULL)
-    {
-        if (root->data == data)
-        {
-            return depth;
-        }
-        else if (data < root->data)
-        {
-            root = root->left;
-        }
-        else
-        {
-            root = root->right;
-        }
-        depth++;
-    }
-
-    return -1;
-}
-
-int findMin(BstNode *root)
-{
-    if (root == NULL)
-    {
-        printf("Tree is empty\n");
-        return -1;
-    }
-
     while (root->left != NULL)
     {
         root = root->left;
     }
-
-    return root->data;
+    return root;
 }
 
-int findMax(BstNode *root)
+BstNode *Delete(BstNode *root, int data)
 {
     if (root == NULL)
+        return root;
+    if (data < root->data)
+        root->left = Delete(root->left, data);
+    else if (data > root->data)
+        root->right = Delete(root->right, data);
+    else
     {
-        printf("Tree is empty\n");
-        return -1;
+        // Case 1: No child
+        if (root->left == NULL && root->right == NULL)
+        {
+            free(root);
+            root = NULL;
+        }
+        // Case 2: One child
+        else if (root->left == NULL)
+        {
+            BstNode *temp = root;
+            root = root->right;
+            free(temp);
+        }
+        else if (root->right == NULL)
+        {
+            BstNode *temp = root;
+            root = root->left;
+            free(temp);
+        }
+        // Case 3: Two children
+        else
+        {
+            BstNode *temp = findMinNode(root->right);
+            root->data = temp->data;
+            root->right = Delete(root->right, temp->data);
+        }
     }
-
-    while (root->right != NULL)
-    {
-        root = root->right;
-    }
-
-    return root->data;
+    return root;
 }
 
 void inorderTraversal(BstNode *root)
@@ -167,27 +106,40 @@ void inorderTraversal(BstNode *root)
     inorderTraversal(root->right);
 }
 
-void preorderTraversal(BstNode *root)
+void findKthMin(BstNode *root, int *k, int *result)
 {
-    if (root == NULL)
+    if (root == NULL || *result != -1)
         return;
     
-    printf("%d ", root->data);
-    preorderTraversal(root->left);
-    preorderTraversal(root->right);
+    findKthMin(root->left, k, result);
+    
+    (*k)--;
+    if (*k == 0)
+    {
+        *result = root->data;
+        return;
+    }
+    
+    findKthMin(root->right, k, result);
 }
 
-void postorderTraversal(BstNode *root)
+void findKthMax(BstNode *root, int *k, int *result)
 {
-    if (root == NULL)
+    if (root == NULL || *result != -1)
         return;
     
-    postorderTraversal(root->left);
-    postorderTraversal(root->right);
-    printf("%d ", root->data);
+    findKthMax(root->right, k, result);
+    
+    (*k)--;
+    if (*k == 0)
+    {
+        *result = root->data;
+        return;
+    }
+    
+    findKthMax(root->left, k, result);
 }
 
-// Queue Functions for Level Order Traversal
 Queue *createQueue()
 {
     Queue *queue = (Queue *)malloc(sizeof(Queue));
@@ -259,6 +211,7 @@ int main()
 {
     BstNode *root = NULL;
 
+    // Insert elements
     root = Insert(root, 15);
     root = Insert(root, 10);
     root = Insert(root, 20);
@@ -266,49 +219,37 @@ int main()
     root = Insert(root, 8);
     root = Insert(root, 12);
 
-    int number;
-    printf("Enter number to find its height and depth: ");
-    scanf("%d", &number);
-
-    if (Search(root, number) == 1)
-    {
-        int nodeHeight = findNodeHeight(root, number);
-        if (nodeHeight != -1)
-        {
-            printf("Height of node with value %d: %d\n", number, nodeHeight);
-        }
-
-        int nodeDepth = findNodeDepth(root, number);
-        if (nodeDepth != -1)
-        {
-            printf("Depth of node with value %d: %d\n", number, nodeDepth);
-        }
-    }
-    else
-    {
-        printf("Node not found\n");
-    }
-
-    int minValue = findMin(root);
-    printf("Minimum value in the tree: %d\n", minValue);
-
-    int maxValue = findMax(root);
-    printf("Maximum value in the tree: %d\n", maxValue);
-
-    printf("\nIn-order Traversal: ");
+    printf("In-order Traversal: ");
     inorderTraversal(root);
     printf("\n");
 
-    printf("Pre-order Traversal: ");
-    preorderTraversal(root);
-    printf("\n");
+    // Find k-th minimum element
+    int k = 3; // Change k for different results
+    int resultMin = -1;
+    findKthMin(root, &k, &resultMin);
+    if (resultMin != -1)
+        printf("3rd Minimum element: %d\n", resultMin);
+    else
+        printf("Not enough elements in the tree.\n");
 
-    printf("Post-order Traversal: ");
-    postorderTraversal(root);
-    printf("\n");
+    // Find k-th maximum element
+    k = 3;
+    int resultMax = -1;
+    findKthMax(root, &k, &resultMax);
+    if (resultMax != -1)
+        printf("3rd Maximum element: %d\n", resultMax);
+    else
+        printf("Not enough elements in the tree.\n");
 
+    // Level-order traversal
     printf("Level-order Traversal: ");
     levelOrderTraversal(root);
+    printf("\n");
+
+    // Delete element
+    root = Delete(root, 10);
+    printf("After deletion of 10, In-order Traversal: ");
+    inorderTraversal(root);
     printf("\n");
 
     return 0;
