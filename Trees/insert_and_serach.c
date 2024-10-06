@@ -106,6 +106,26 @@ void inorderTraversal(BstNode *root)
     inorderTraversal(root->right);
 }
 
+void preorderTraversal(BstNode *root)
+{
+    if (root == NULL)
+        return;
+    
+    printf("%d ", root->data);
+    preorderTraversal(root->left);
+    preorderTraversal(root->right);
+}
+
+void postorderTraversal(BstNode *root)
+{
+    if (root == NULL)
+        return;
+    
+    postorderTraversal(root->left);
+    postorderTraversal(root->right);
+    printf("%d ", root->data);
+}
+
 void findKthMin(BstNode *root, int *k, int *result)
 {
     if (root == NULL || *result != -1)
