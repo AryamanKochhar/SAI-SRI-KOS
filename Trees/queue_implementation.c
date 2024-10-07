@@ -25,7 +25,7 @@ struct Node *insert(struct Node *root, int key)
         return createNode(key);
 
     // Create a queue for level order traversal
-    struct Node *queue[100];
+    struct Node *queue[100] = {NULL};
     int front = 0, rear = 0;
     queue[rear++] = root;
 
