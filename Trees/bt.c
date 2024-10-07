@@ -210,10 +210,12 @@ void freeTree(struct Node *root)
 
 int main()
 {
-    struct Node *root = createNode(2);
-    root->left = createNode(3);
-    root->right = createNode(4);
-    root->left->left = createNode(5);
+    struct Node *root = NULL;
+
+    for(int i = 0; i < 10; i++)
+    {
+        root = insert(root, i);
+    }
 
     printf("Inorder traversal before insertion: ");
     inOrderDFS(root);
