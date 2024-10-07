@@ -56,6 +56,15 @@ BstNode *findMinNode(BstNode *root)
     return root;
 }
 
+BstNode *findMinNode(BstNode *root)
+{
+    while (root->right != NULL)
+    {
+        root = root->right;
+    }
+    return root;
+}
+
 BstNode *Delete(BstNode *root, int data)
 {
     if (root == NULL)
@@ -238,6 +247,10 @@ int main()
     root = Insert(root, 25);
     root = Insert(root, 8);
     root = Insert(root, 12);
+    root = Insert(root, 7);
+    root = Insert(root, 9);
+    root = Insert(root, 11);
+    root = Insert(root, 13);
 
     printf("In-order Traversal: ");
     inorderTraversal(root);
