@@ -1,4 +1,4 @@
-// Height and depth
+// heaight and depth
 #include <stdio.h>
 #include <stdlib.h>
 
