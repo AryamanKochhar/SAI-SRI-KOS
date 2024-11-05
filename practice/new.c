@@ -8,7 +8,6 @@ typedef struct BstNode
     struct BstNode *right;
 } BstNode;
 
-
 BstNode *createNewNode(int data)
 {
     BstNode *new_node = (BstNode *)malloc(sizeof(BstNode));
@@ -53,18 +52,20 @@ BstNode *findMaxNode(BstNode *root)
     return root;
 }
 
-int isBSTUtil(BstNode* node, int minValue, int maxValue) {
+int isBSTUtil(BstNode *node, int minValue, int maxValue)
+{
     if (node == NULL)
         return 1;
-    
+
     if (node->data < minValue || node->data > maxValue)
         return 0;
-    
+
     return isBSTUtil(node->left, minValue, node->data - 1) &&
            isBSTUtil(node->right, node->data + 1, maxValue);
 }
 
-int isBST(BstNode* root) {
+int isBST(BstNode *root)
+{
     return isBSTUtil(root, INT_MIN, INT_MAX);
 }
 
@@ -112,7 +113,7 @@ void inorderTraversal(BstNode *root)
 {
     if (root == NULL)
         return;
-    
+
     inorderTraversal(root->left);
     printf("%d ", root->data);
     inorderTraversal(root->right);
@@ -122,7 +123,7 @@ void preorderTraversal(BstNode *root)
 {
     if (root == NULL)
         return;
-    
+
     printf("%d ", root->data);
     preorderTraversal(root->left);
     preorderTraversal(root->right);
@@ -132,7 +133,7 @@ void postorderTraversal(BstNode *root)
 {
     if (root == NULL)
         return;
-    
+
     postorderTraversal(root->left);
     postorderTraversal(root->right);
     printf("%d ", root->data);
@@ -142,16 +143,16 @@ void findKthMin(BstNode *root, int *k, int *result)
 {
     if (root == NULL || *result != -1)
         return;
-    
+
     findKthMin(root->left, k, result);
-    
+
     (*k)--;
     if (*k == 0)
     {
         *result = root->data;
         return;
     }
-    
+
     findKthMin(root->right, k, result);
 }
 
@@ -159,43 +160,58 @@ void findKthMax(BstNode *root, int *k, int *result)
 {
     if (root == NULL || *result != -1)
         return;
-    
+
     findKthMax(root->right, k, result);
-    
+
     (*k)--;
     if (*k == 0)
     {
         *result = root->data;
         return;
     }
-    
+
     findKthMax(root->left, k, result);
 }
 
-
-void LevelOrder(BstNode* root)
+void LevelOrder(BstNode *root)
 {
-    if(root == NULL)
+    if (root == NULL)
         return;
-    
-    BstNode* queue[100];
+
+    BstNode *queue[100];
     int front = 0, rear = 0;
     queue[rear++] = root;
 
-    while(front < rear)
+    while (front < rear)
     {
-        BstNode* current = queue[front++];
+        BstNode *current = queue[front++];
         printf("%d ", current->data);
 
-        if(current->left != NULL)
+        if (current->left != NULL)
         {
             queue[rear++] = current->left;
         }
-        if(current->right != NULL)
+        if (current->right != NULL)
         {
             queue[rear++] = current->right;
         }
     }
+}
+
+int LCA(BstNode *root, int q, int r)
+{
+    if (root == NULL)
+        return NULL;
+    if (root->data < q && root->data < r)
+    {
+        return LCA(root->right, q, r);
+    }
+    if (root->data > q && root->data > r)
+    {
+        return LCA(root->left, q, r);
+    }
+
+    return root->data;
 }
 
 int main()
@@ -215,7 +231,7 @@ int main()
     root = Insert(root, 13);
 
     printf("In-order Traversal: ");
-    inorderTraversal(root);
+    preorderTraversal(root);
     printf("\n");
 
     // Find k-th minimum element
@@ -241,10 +257,10 @@ int main()
     LevelOrder(root);
     printf("\n");
     // Delete element
-    root = Delete(root, 10);
-    printf("After deletion of 10, In-order Traversal: ");
     inorderTraversal(root);
     printf("\n");
+    
+    printf("%d", LCA(root, 7, 13));
 
     return 0;
 }
