@@ -23,7 +23,6 @@ void printArray(int arr[], int n)
     printf("\n");
 }
 
-// Driver method
 int main()
 {
     int arr[] = { 12, 11, 13, 5, 6 };

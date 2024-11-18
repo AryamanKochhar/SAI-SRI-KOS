@@ -38,7 +38,7 @@ int prims(int **graph, int v)
         mstSet[u] = true;
         for(int j = 0; j < v; j++)
         {
-            if(graph[u][j] && mstSet[j] == false && graph[u][j] < key[j])
+            if(graph[u][j] && mstSet[j] == false && graph[u][j] < key[i])
             {
                 parent[j] = u;
                 key[j] = graph[u][j];
@@ -53,6 +53,6 @@ int prims(int **graph, int v)
         totalCost += graph[i][parent[i]];
     }
 
-    return totalCost
+    return totalCost;
 }
 
