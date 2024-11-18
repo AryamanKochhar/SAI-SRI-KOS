@@ -11,8 +11,7 @@ int bfs(int start, int goal, int n, int *path)
     int visited[MAX_VERTICES] = {0};
     int queue[MAX_VERTICES];
     int front = 0, rear = 0;
-    int parent[MAX_VERTICES];
-    memset(parent, -1, sizeof(parent));
+    int parent[MAX_VERTICES] = {-1};
 
     visited[start] = 1;
     queue[rear++] = start;
