@@ -145,6 +145,21 @@ void printDeque(struct Deque *dq)
     printf("\n");
 }
 
+void displayDeque(struct Deque *dq) {
+    if (isEmpty(dq)) {
+        printf("Deque is empty!\n");
+        return;
+    }
+    printf("Deque elements: ");
+    int i = dq->front;
+    while (1) {
+        printf("%d ", dq->items[i]);
+        if (i == dq->rear) break;
+        i = (i + 1) % MAX;
+    }
+    printf("\n");
+}
+
 int main()
 {
     struct Deque dq;

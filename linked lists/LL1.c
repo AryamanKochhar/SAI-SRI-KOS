@@ -89,7 +89,6 @@ void bubbleSort(L *head)
 {
     int swapped;
     L *curr;
-    L *nextNode;
     if (head == NULL)
         return;
     do
