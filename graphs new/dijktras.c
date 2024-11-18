@@ -52,7 +52,7 @@ void dijktras(int graph[MAX][MAX], int n, int start)
             {
                 if(cost[nextnode][i] + mindistance < distance[i])
                 {
-                    distance[i]; = mindistance + cost[nextnode][i];
+                    distance[i] = mindistance + cost[nextnode][i];
                     pred[i] = nextnode;
                 }
             }

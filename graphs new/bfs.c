@@ -25,8 +25,27 @@ void bfs(int adj[MAX][MAX], int n, int s)
     }
 }
 
-void adjEdge(int adj[MAX][MAX], int u, int v)
+void addEdge(int adj[MAX][MAX], int u, int v)
 {
     adj[u][v] = 1;
     adj[v][u] = 1;
+}
+
+int main()
+{
+    int v = 6;
+    scanf("%d", &v);
+    int adj[MAX][MAX] = {0};
+
+    for (int i = 0; i < 7; i++)
+    {
+        int x, y;
+        scanf("%d %d", &x, &y);
+        addEdge(adj, x, y);
+    }
+
+    printf("BFS starting from 0:\n");
+    bfs(adj, v, 0);
+
+    return 0;
 }

@@ -38,7 +38,7 @@ int findMinimimumCost(int **graph, int v)
         int u = minKey(key, mstSet, v);
         mstSet[u] = true;
 
-        for (int i = 0; i < v; i++)
+        for (int i = 0; i < v-1; i++)
         {
             if (graph[u][i] && mstSet[i] == false && graph[u][i] < key[i])
             {
