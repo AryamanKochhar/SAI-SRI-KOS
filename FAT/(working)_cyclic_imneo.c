@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Define the maximum number of vertices
 #define MAX_VERTICES 100
 
 // Adjacency list representation of the graph
@@ -17,7 +16,7 @@ void addEdge(int u, int v)
 }
 
 // Depth-First Search (DFS) to detect a cycle
-int dfs(int start, int v, int n)
+int dfs(int v, int n)
 {
     visited[v] = 1;
 
@@ -27,18 +26,18 @@ int dfs(int start, int v, int n)
         {
             if (!visited[i])
             {
-                parent[i] = v;
-                if (dfs(v, i, n))
+                parent[i] = v; // Mark the current node as the parent of the neighbor
+                if (dfs(i, n)) // Explore the neighbor
                     return 1;
             }
             else if (i != parent[v])
             {
-                return 1; // Cycle found
+                return 1; // Cycle detected
             }
         }
     }
 
-    return 0;
+    return 0; // No cycle found in this path
 }
 
 int main()
@@ -46,7 +45,7 @@ int main()
     int V, E;
     scanf("%d %d", &V, &E);
 
-    // Initialize the graph
+    // Initialize the adjacency matrix and visited/parent arrays
     for (int i = 0; i < V; i++)
     {
         for (int j = 0; j < V; j++)
@@ -70,14 +69,14 @@ int main()
     {
         if (!visited[i])
         {
-            if (dfs(i, i, V))
+            if (dfs(i, V))
             {
-                printf("1\n");
+                printf("1\n"); // Cycle detected
                 return 0;
             }
         }
     }
 
-    printf("0\n");
+    printf("0\n"); // No cycle detected
     return 0;
 }

@@ -34,7 +34,6 @@ int prims(int **graph, int v)
     key[0] = 0;     
     parent[0] = -1; 
 
-    // Construct MST with v-1 edges
     for (int count = 0; count < v - 1; count++)
     {
         int u = minKey(mstSet, key, v); 
@@ -55,10 +54,6 @@ int prims(int **graph, int v)
     {
         totalCost += graph[i][parent[i]];
     }
-
-    free(parent);
-    free(key);
-    free(mstSet);
 
     return totalCost;
 }
