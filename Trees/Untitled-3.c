@@ -1,4 +1,4 @@
-// kth smallest and largest
+ // kth smallest and largest
 #include <stdio.h>
 #include <stdlib.h>
 
