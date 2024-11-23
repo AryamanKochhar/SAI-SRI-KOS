@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define MAX_CWND 16    // Maximum congestion window size
+#define MAX_CWND 32    // Maximum congestion window size
 #define INITIAL_CWND 1 // Initial congestion window size
 
 void simulateCongestionControl()
@@ -68,7 +68,7 @@ void simulateCongestionControl()
         round++;
 
         // Stop if the congestion window reaches zero
-        if (round > 10)
+        if (round > 20)
         { // Limit the simulation to 10 rounds
             break;
         }
